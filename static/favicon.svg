@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="320" height="320" version="1.1" viewBox="0 0 84.667 84.667" xmlns="http://www.w3.org/2000/svg">
+ <g stroke-linecap="square">
+  <rect width="84.667" height="84.667" stroke-width=".265" style="paint-order:stroke fill markers"/>
+  <g fill="none" stroke="#fff" stroke-width="7.5">
+   <path d="m42.333 10.839v62.988"/>
+   <path d="m58.08 15.059a31.494 31.494 0 0 1 15.747 27.275 31.494 31.494 0 0 1-15.747 27.275" style="paint-order:stroke fill markers"/>
+   <path d="m42.333 42.333h-31.494"/>
+   <path d="m15.059 26.586 27.275 15.747-15.747-27.275"/>
+   <path d="m15.059 58.08 27.275-15.747-15.747 27.275"/>
+  </g>
+ </g>
+</svg>
