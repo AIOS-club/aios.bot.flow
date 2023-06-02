@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id      Int    @id @default(autoincrement())
+  email   String @unique
+  role    Role   @default(USER)
+  botList Bot[]
+}
+
+model Bot {
+  id      Int    @id @default(autoincrement())
+  botName String
+  user    User   @relation(fields: [userEmail], references: [email])
+  userEmail  String
+  token   String
+  icon    String
+  api     Json
+}

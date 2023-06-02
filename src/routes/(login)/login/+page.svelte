@@ -1,8 +1,9 @@
 <div id="login-window">
     <h1>Login</h1>
-    <form action="POST">
+    <form method="POST">
         Email:<br />
-        <input>
+        <input id="email" name="email" type="email">
+        <input type="submit" value="Login" />
     </form>
     <hr />
     or:<br />

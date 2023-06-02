@@ -1,5 +1,6 @@
 <script lang="ts">
     export let data;
+
 </script>
 
 <svelte:head>
@@ -17,13 +18,20 @@
         <b>{data.params.userEmail}</b><br />
     </div>
     <details open id="user-bot-list">
+        {#if data.allowEdit}
+        <a href={`/user/${data.params.userEmail}/newbot`}>New bot</a>
+        {/if}
         <summary>Bots</summary>
         {#if data.user.bot}
             {#each data.user.bot as bot}
                 <div class="user-bot-item">
                     <img width="32" height="32" src={bot.icon} alt="bot icon" />
-                    <b>{bot.name}</b> {bot.latestVersion}
+                    <b>{bot.name}</b>
                     <a href={`/bot/${bot.id}`}>Details</a>
+                    {#if data.allowEdit}
+                    <a href={`/bot/${bot.id}/edit`}>Edit</a>
+                    <a href={`/bot/${bot.id}/delete`}>Delete</a>
+                    {/if}
                 </div>
             {/each}
         {/if}
