@@ -14,10 +14,10 @@ export async function load({ params, cookies }) {
     let user = await GetUser(userEmail);
     let session = cookies.get('session_code')||'';
     let allowEdit =
-        (userEmail === bot.userEmail
-        && await CheckLoginSession(userEmail, session))
-        || (user!.role === 'ADMIN');
-    // TODO: resolve idOrName into id *and* name.
+        user && (
+            (userEmail === bot.userEmail
+            && await CheckLoginSession(userEmail, session))
+            || (user!.role === 'ADMIN'))
     return {
         params: params,
         allowEdit,

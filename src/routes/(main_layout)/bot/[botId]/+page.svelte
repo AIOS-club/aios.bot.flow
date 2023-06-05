@@ -3,6 +3,8 @@
     export let data;
 
     let yamlConfig = yaml.stringify(data.bot.api);
+
+    export let prerender = false;
 </script>
 
 <svelte:head>
@@ -21,7 +23,7 @@
         <a href={`/bot/${data.bot.id}/edit`}>Edit</a>
         {/if}
         <br />
-        API address root: <code>{window.location.protocol}//{window.location.host}/api/v0/{data.bot.id}</code>
+        API address root: <code>/api/v0/{data.bot.id}</code>
     </div>
     <div id="bot-body">
         <details open>

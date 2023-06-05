@@ -10,14 +10,14 @@ export const actions = {
         e.cookies.set('login_userEmail', userEmail, {
             secure: !(dev || import.meta.env.DEV)
         });
-        console.log(`OTP Registering...`);
+        // console.log(`OTP Registering...`);
         let code: string = await RegisterLoginOTP(userEmail);
-        console.log(`OTP Registered. ${code}`);
-        // SendMail(
-        //     userEmail!,
-        //     'You are logging in on aios.bot.flow.',
-        //     `The code is ${code}.\nPlease enter it in 10 minutes.`
-        // );
+        // console.log(`OTP Registered. ${code}`);
+        SendMail(
+            userEmail!,
+            'You are logging in on aios.bot.flow.',
+            `The code is ${code}.\nPlease enter it in 10 minutes.`
+        );
         throw redirect(302, '/login/verify');
     }
 }

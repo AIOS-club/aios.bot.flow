@@ -19,38 +19,88 @@ Bot:
         // versioning: i guess we'll just do something like `image-v1` `image-v2`...
         path: string
         type: string  // GET, POST, that kind of stuff.
-        private: boolean  // cannot be used publicly when true.
-        gated: boolean  // requires a token to use.
-        inputSchema: SCHEMA
-        outputSchema: SCHEMA
-        flow: Flow  // not sure.
-        rateLimit: number  // number of requests allowed per second per IP. only works when `private` is false.
+        config:
+          private: boolean  // cannot be used publicly when true.
+          gated: boolean  // requires a token to use.
+          inputSchema: SCHEMA
+          rateLimit: number  // number of requests allowed per second per IP. only works when `private` is false.
+          flow: Flow  // not sure.
+          output: array of string
+          outputSchema: SCHEMA
 ```
 
 ```
 Flow: array
     // the variables this step requires.
-    variables: array of string
+    <!-- variables: array of string -->
     // the precondition of this step
-    precondition: string
+    <!-- precondition: string -->
     // the prompt that gets populated with `variables` when send to LLM.
     template: string
-    // how to interpret the response
-    // NOTE: the "csv" is not actually csv; in a csv each record is separated by
-    //       newline, here each record is separated by semicolon, so it's really
-    //       comma-semicolon separated values, or "cssv".
-    responseFormat: "csv"|"json"
     // what part of the response get carried over onto other steps.
     effect: string
+    // ignore `effect`; the output (interpreted as JSON) gets piped into result.
+    result: string
 ```
 
 the logic:
 
 1.  user provide the input.
-2.  for step in flow:
+2.  check the input against inputSchema.
+3.  new env with `input` populated with the input.
+4.  for steps in flow:
         1.  populate step.template with input.
         2.  ask LLM.
         3.  perform effect with response.
+5.  perform outputEffect
+6.  check `output` from env against outputSchema
+
+pseudo-code:
+
+``` javascript
+if (!_CheckSchema(userInput, config.inputSchema)) { throw Error(); }
+env = {input: userInput};
+config.flow.forEach((f) => {
+    let prompt = _Instantiate(f.template, env);
+    let llmResponse = _AskLLM(prompt);
+    _PerformEffect(env, llmResponse, f.result? f.result : f.effect);
+});
+_PerformEffect(env, config.outputEffect);
+if (!_CheckSchema(env.output, config.outputSchema)) { throw Error(); }
+return env.output;
+```
+
+
+```
+type Schema = "string"
+            | "number"
+            | "boolean"
+            | ["array", Schema]
+            | ["map", "number"|"string", Schema]
+            | ["object", {[key: string|number]: Schema}]
+            | ["oneof", schema1, schema2, ...]
+```
+
+``` yaml
+# e.g.: 
+schema: string
+schema: number
+schema: boolean
+schema:
+  - array
+  - # schema for elements
+schema:
+  - map
+  - string   # or number
+  - # schema for elements
+schema:
+  - object
+  - # kvpairs.
+schema:
+  - oneof
+  - # possible schema branches...
+```
+
 
 ### The effect language
 

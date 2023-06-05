@@ -24,8 +24,10 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@microsoft/fetch-event-source": "^2.0.1",
 		"@prisma/client": "4.15.0",
 		"ioredis": "^5.3.2",
+		"node-fetch": "^3.3.1",
 		"nodemailer": "^6.9.3",
 		"yaml": "^2.3.1"
 	}

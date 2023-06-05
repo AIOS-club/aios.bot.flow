@@ -6,8 +6,6 @@
         <input type="submit" value="Login" />
     </form>
     <hr />
-    or:<br />
-    Login with GitHub
     <hr />
     <a href="/">Back</a>
 </div>

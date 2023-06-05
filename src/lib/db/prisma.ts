@@ -52,5 +52,5 @@ export async function GetBotById(id: number) {
 
 export async function IsUserAdmin(email: string) {
     let user = await GetUser(email);
-    user.role === user_type
+    return user && user.role === 'ADMIN';
 }

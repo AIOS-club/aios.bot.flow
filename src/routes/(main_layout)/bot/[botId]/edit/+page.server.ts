@@ -1,10 +1,11 @@
 import * as yaml from 'yaml';
-import { GetBotById, GlobalPrismaClient } from "$lib/db/prisma.js";
+import { GetBotById, GetUser, GlobalPrismaClient } from "$lib/db/prisma.js";
 import { CheckLoginSession } from "$lib/session";
 import { error, redirect } from "@sveltejs/kit";
 
 export async function load({params, cookies}) {
-    let userEmail = cookies.get('session_userEmail')||'';
+    let userEmail = cookies.get('session_userEmail');
+    if (!userEmail) { throw redirect(302, '/'); }
     let session = cookies.get('session_code')||'';
     if (!await CheckLoginSession(userEmail, session)) {
         throw redirect(302, `/bot/${params.botId}`);
@@ -36,13 +37,19 @@ export const actions = {
                 message: 'No such bot.'
             });
         }
+        
+        let userEmail = e.cookies.get('session_userEmail');
+        if (!userEmail) { throw error(403, {message: 'Forbidden'}); }
+        let user = await GetUser(userEmail);
+        if (!user || (user.email !== bot.userEmail && user.role !== 'ADMIN')) {
+            throw error(403, {message: 'Forbidden'});
+        }
+
         const data = await e.request.formData();
         let botName = data.get('botName')?.toString()||'';
-        let botFlow = data.get('botFlow')?.toString()||'';
+        let botFlow = JSON.parse(data.get('__raw')?.toString()||'[]');
         let token = data.get('token')?.toString()||'';
         let icon = data.get('icon')?.toString()||'';
-        let useYaml = data.get('useYaml');
-        botFlow = useYaml? yaml.parse(botFlow) : JSON.parse(botFlow);
         await GlobalPrismaClient.bot.update({
             where: { id: parseInt(e.params.botId, 10) },
             data: {
