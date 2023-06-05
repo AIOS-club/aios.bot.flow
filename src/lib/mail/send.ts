@@ -15,22 +15,12 @@ export async function SendMail(to: string, title: string, content: string) {
             }
         } as any);
     }
-    await new Promise((resolve, reject) => {
-        _mailAccount?.verify((err, info) => {
-            if (err) { reject (err); }
-            else { resolve(info); }
-        });
-    });
+    await _mailAccount.verify();
     let message = {
         from: env.SMTP_EMAIL,
         to: to,
         subject: title,
         html: content
     };
-    await new Promise((resolve, reject) => {
-        _mailAccount?.sendMail(message, (err, info) => {
-            if (err) { reject(err); }
-            else { resolve(info); }
-        });
-    });
+    await _mailAccount.sendMail(message);
 }
