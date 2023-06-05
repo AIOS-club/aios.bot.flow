@@ -4,7 +4,6 @@
 
     let yamlConfig = yaml.stringify(data.bot.api);
 
-    export let prerender = false;
 </script>
 
 <svelte:head>
