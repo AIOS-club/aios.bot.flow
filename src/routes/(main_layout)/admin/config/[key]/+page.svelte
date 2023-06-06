@@ -7,7 +7,7 @@
     let elemReturn: HTMLInputElement;
     let useYaml: boolean;
     
-    function handleUseYaml(e) {
+    function handleUseYaml(e: Event) {
         if (e.target.checked) {
             resultText = yaml.stringify(JSON.parse(resultText));
         } else {
@@ -15,7 +15,7 @@
         }
     }
 
-    function handleSubmit(e) {
+    function handleSubmit(e: Event) {
         if (useYaml) {
             elemReturn.value = JSON.stringify(yaml.parse(resultText));
         } else {
@@ -26,7 +26,7 @@
 </script>
 
 <svelte:head>
-    <title>editing config {data.config.key} :: aios.bot.flow</title>
+    <title>editing config :: aios.bot.flow</title>
 </svelte:head>
 <div id="config">
     <form method="POST">

@@ -1,5 +1,5 @@
 import { GetPersistentConfigByKey, GetUser, UpdateConfig } from '$lib/db/prisma';
-import { redirect } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 
 export async function load({ params, cookies }) {
     let userEmail = cookies.get('session_userEmail')||'';
@@ -11,6 +11,9 @@ export async function load({ params, cookies }) {
         throw redirect(302, `/user/${userEmail}`);
     }
     let x = await GetPersistentConfigByKey(params.key);
+    if (!x) {
+        throw error(404, { message: 'No such config key. Please create a new config item under this key first. ' });
+    }
     return {
         config: x
     };

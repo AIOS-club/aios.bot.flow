@@ -8,7 +8,7 @@ export async function ResolveHostname() {
 }
 
 export async function ResolveGithubAppConfig() {
-    let x = ((await GetPersistentConfigByKey('github'))?.value? as any);
+    let x = (await GetPersistentConfigByKey('github'))?.value;
     if (!x) {
         x = {
             clientId: env.GITHUB_CLIENT_ID,

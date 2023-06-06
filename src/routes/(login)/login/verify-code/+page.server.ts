@@ -5,8 +5,8 @@ import { RegisterLoginSession } from '$lib/session';
 import { dev } from '$app/environment';
 import { RegisterUser } from '$lib/db/prisma';
 
-export function load({cookies}) {
-    if (!cookies.get('login_userEmail')) {
+export function load(e: RequestEvent) {
+    if (!e.cookies.get('login_userEmail')) {
         throw redirect(303, '/login');
     }
     return { success: true };

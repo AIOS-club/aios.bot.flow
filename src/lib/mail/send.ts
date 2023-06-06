@@ -43,7 +43,7 @@ export async function SendMail(to: string, title: string, content: string) {
         });
     }
     let sender: any;
-    switch (mailerConfig.type) {
+    switch ((mailerConfig as any).type) {
         case 'smtp': sender = _ResolveSMTPSender(mailerConfig); break;
         // case 'postmark': sender = _ResolvePostmarkSender(mailerConfig); break;
     }

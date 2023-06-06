@@ -10,7 +10,7 @@
 			<a href="/"><b>aios.bot.flow</b></a>
 		</span>
 		<div class="right">
-			{#if data.loggedIn}
+			{#if data.loggedIn && data.user}
 				<span><a href={`/user/${data.user.email}`}>{data.user.email}</a></span>
 				{#if data.user.role === 'ADMIN'}
 				<span><a href="/admin">Admin</a></span>
