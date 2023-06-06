@@ -8,14 +8,14 @@ From AI prompts to online APIs.
 + Redis & PostgreSQL
   + (Support for MySQL/MariaDB planned.)
 
+This repo uses Prisma for ORM; one shall push the schema to your db first with `npx prisma db push` or add it in the build process.
+
 ## Developing
 
 ```bash
 pnpm install
 pnpm run dev
 ```
-
-This repo uses Prisma for ORM.
 
 ## Building
 

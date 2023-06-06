@@ -5,7 +5,7 @@
 
 
 <svelte:head>
-    <title>bot deleting :: aios.bot.flow</title>
+    <title>deleting bot "{data.bot.botName}" (#{data.bot.id}) :: aios.bot.flow</title>
 </svelte:head>
 <div id="bot-delete">
     <form method="POST">

@@ -37,7 +37,6 @@ export const actions = {
                     secure: !dev,
                 }
             );
-            console.log(e.cookies.getAll());
             throw redirect(302, '/');
         }
         return {

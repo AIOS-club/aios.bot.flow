@@ -16,10 +16,11 @@
             </svg>
         {/if}
         <b>{data.params.userEmail}</b><br />
+        <a href={`/user/${data.params.userEmail}/edit`}>Edit Profile</a>
     </div>
     <details open id="user-bot-list">
         {#if data.allowEdit}
-        <a href={`/user/${data.params.userEmail}/newbot`}>New bot</a>
+        <a href={`/user/${data.params.userEmail}/newbot`}>New Bot</a>
         {/if}
         <summary>Bots</summary>
         {#if data.user.bot}

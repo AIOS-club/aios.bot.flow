@@ -11,7 +11,10 @@
 		</span>
 		<div class="right">
 			{#if data.loggedIn}
-				<span><a href={`/user/${data.user.userEmail}`}>{data.user.userEmail}</a></span>
+				<span><a href={`/user/${data.user.email}`}>{data.user.email}</a></span>
+				{#if data.user.role === 'ADMIN'}
+				<span><a href="/admin">Admin</a></span>
+				{/if}
 				<span><a href="/logout">Logout</a></span>
 			{:else}
 				<span><a href="/login">Login</a></span>
@@ -44,23 +47,6 @@
 		box-sizing: border-box;
 	}
 
-	footer {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		padding: 12px;
-	}
-
-	footer a {
-		font-weight: bold;
-	}
-
-	@media (min-width: 480px) {
-		footer {
-			padding: 12px 0;
-		}
-	}
     #header {
         height: 2rem;
         color: var(--foreground-color);

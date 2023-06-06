@@ -1,5 +1,5 @@
 import * as yaml from 'yaml';
-import { GetBotById, GetUser, GlobalPrismaClient } from "$lib/db/prisma.js";
+import { GetBotById, GetUser, GlobalPrismaClient, UpdateBot } from "$lib/db/prisma.js";
 import { CheckLoginSession } from "$lib/session";
 import { error, redirect } from "@sveltejs/kit";
 
@@ -50,14 +50,11 @@ export const actions = {
         let botFlow = JSON.parse(data.get('__raw')?.toString()||'[]');
         let token = data.get('token')?.toString()||'';
         let icon = data.get('icon')?.toString()||'';
-        await GlobalPrismaClient.bot.update({
-            where: { id: parseInt(e.params.botId, 10) },
-            data: {
-                api: botFlow,
-                botName: botName,
-                icon: icon,
-                token: token,
-            }
+        await UpdateBot(parseInt(e.params.botId, 10), {
+            api: botFlow,
+            botName: botName,
+            icon: icon,
+            token: token
         });
         
         throw redirect(302, `/bot/${bot.id}`);

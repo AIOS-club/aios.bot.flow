@@ -2,12 +2,6 @@
 import { GetUser, GetUserBotList } from '$lib/db/prisma.js';
 import { CheckLoginSession } from '$lib/session';
 import { error } from '@sveltejs/kit';
-import * as crypto from 'crypto';
-
-function md5hex(str: string) {
-    const md5 = crypto.createHash('md5')
-    return md5.update(str, 'binary').digest('hex')
-}
 
 export async function load({ params, cookies }) {
     let user = await GetUser(params.userEmail);
@@ -29,8 +23,7 @@ export async function load({ params, cookies }) {
         allowEdit: allowEdit,
         user: {
             email: params.userEmail,
-            icon: `https://www.gravatar.com/avatar/${md5hex(params.userEmail.trim())}`,
-            
+            icon: user.icon,
             bot: botList? botList.map((v) => {
                 return {
                     id: v.id,

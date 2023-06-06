@@ -186,3 +186,22 @@ Errors:
 + -4001: does not have such bot.
 + -4002: bot does not have such endpoint.
 + -5001: internal error (`data` may contain extra errmsg)
+
+## Mailer config
+
+```
+type: smtp
+config:
+  server: [insert data here]
+  port: [insert data here]
+  email: [insert data here]
+  password: [insert data here]
+```
+
+Postmark:
+
+```
+type: smtp
+config:
+  token: [insert postmark token here]
+```

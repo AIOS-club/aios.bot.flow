@@ -59,7 +59,7 @@
 
 
 <svelte:head>
-    <title>bot editor :: aios.bot.flow</title>
+    <title>editing bot "{data.bot.botName}" (#{data.bot.id}) :: aios.bot.flow</title>
 </svelte:head>
 <div id="bot-edit">
     <form method="POST">

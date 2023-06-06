@@ -7,7 +7,7 @@
 </script>
 
 <svelte:head>
-    <title>bot: {data.bot.botName} :: aios.bot.flow</title>
+    <title>bot: {data.bot.botName} (#{data.bot.id}) :: aios.bot.flow</title>
 </svelte:head>
 <div id="bot-profile">
     <div id="bot-card">
