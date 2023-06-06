@@ -44,3 +44,9 @@ export async function CheckGithubLoginOTP(otp: string) {
     let r = await client.get(key);
     return r && r === 'ok';
 }
+
+export async function InvalidateGithubLoginOTP(otp: string) {
+    let key = `otp_github_${otp}`;
+    let client = await GetRedisClient();
+    await client.del(key);
+}
