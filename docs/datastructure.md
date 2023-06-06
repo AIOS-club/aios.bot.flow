@@ -187,7 +187,9 @@ Errors:
 + -4002: bot does not have such endpoint.
 + -5001: internal error (`data` may contain extra errmsg)
 
-## Mailer config
+## Config
+
+### `mailer`
 
 ```
 type: smtp
@@ -204,4 +206,21 @@ Postmark:
 type: smtp
 config:
   token: [insert postmark token here]
+```
+
+### `hostname`
+
+Required for github login.
+
+```
+string
+```
+
+### `github`
+
+Required for github login.
+
+```
+clientId: string
+clientSecret: string
 ```

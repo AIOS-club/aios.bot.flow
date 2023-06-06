@@ -37,4 +37,10 @@ REDIS_URL=
 
 # PostgreSQL. Used for storing the config for bots.
 POSTGRES_DATABASE_URL=
+
+# This is for login with github.
+# Hostname should be your deploy address.
+HOSTNAME=
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
 ```

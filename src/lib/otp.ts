@@ -29,3 +29,18 @@ export async function CheckLoginOTP(id: string, otp: string) {
     let res = await client.get(key);
     return res && res === otp;
 }
+
+export async function RegisterGithubLoginOTP(otp: string) {
+    let key = `otp_github_${otp}`;
+    let value = `ok`;
+    let client = await GetRedisClient();
+    await client.set(key, value, 'EX', 600);
+    return;
+}
+
+export async function CheckGithubLoginOTP(otp: string) {
+    let key = `otp_github_${otp}`;
+    let client = await GetRedisClient();
+    let r = await client.get(key);
+    return r && r === 'ok';
+}

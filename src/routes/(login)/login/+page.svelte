@@ -6,6 +6,7 @@
         <input type="submit" value="Login" />
     </form>
     <hr />
+    Or: <a href="/login/via-github">Login via GitHub</a>
     <hr />
     <a href="/">Back</a>
 </div>

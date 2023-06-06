@@ -22,7 +22,7 @@ export const actions = {
                 `The code is ${code}.\nPlease enter it in 10 minutes.`
             );
         }
-        throw redirect(302, '/login/verify');
+        throw redirect(302, '/login/verify-code');
     }
 }
 
