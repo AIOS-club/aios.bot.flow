@@ -3,47 +3,47 @@ import { PrismaClient } from '@prisma/client';
 export const GlobalPrismaClient = new PrismaClient();
 
 
-export async function RegisterUser(email: string) {
-    if (!await GlobalPrismaClient.user.findFirst({where: {email: email}})) {
+export async function RegisterUser(handle: string) {
+    if (!await GlobalPrismaClient.user.findFirst({where: {handle: handle}})) {
         const user = await GlobalPrismaClient.user.create({
             data: {
-                email: email,
+                handle: handle,
             }
         });
     }
     return;
 }
 
-export async function GetUser(email: string) {
+export async function GetUser(handle: string) {
     return await GlobalPrismaClient.user.findFirst({
-        where: {email: email}
+        where: { handle: handle }
     });
 }
 
-export async function UpdateUser(email: string, newValue: {[key: string]: any}) {
+export async function UpdateUser(handle: string, newValue: {[key: string]: any}) {
     let user = await GlobalPrismaClient.user.findFirst({
-        where: {email: email}
+        where: {handle: handle}
     });
-    if (!user) { throw new Error(`Cannot find user ${email}`); }
+    if (!user) { throw new Error(`Cannot find user ${handle}`); }
     delete newValue.email;
     return await GlobalPrismaClient.user.update({
-        where: { email: email },
+        where: { handle: handle },
         data: newValue
     });
 }
 
-export async function GetUserBotList(email: string) {
+export async function GetUserBotList(handle: string) {
     const res = await GlobalPrismaClient.bot.findMany({
-        where: { userEmail: email }
+        where: { userHandle: handle }
     });
     return res;
 }
 
-export async function RegisterBot(userEmail: string, botName: string, icon: string, token: string) {
+export async function RegisterBot(userHandle: string, botName: string, icon: string, token: string) {
     return await GlobalPrismaClient.bot.create({
         data: {
             botName: botName,
-            userEmail: userEmail,
+            userHandle: userHandle,
             token: token,
             icon: icon,
             api: [],

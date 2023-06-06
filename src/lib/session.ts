@@ -1,5 +1,8 @@
 import { GetRedisClient } from "./db/redis";
 
+export const SESSION_USER_HANDLE_KEY = `session_userHandle`;
+export const SESSION_USER_CODE_KEY = `session_code`;
+
 export function GenerateRandomString(n: number, characterSet: string = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789=_') {
     let res: string[] = [];
     for (let i = 0; i < n; i++) {

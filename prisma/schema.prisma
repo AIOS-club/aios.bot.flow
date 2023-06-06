@@ -17,20 +17,20 @@ enum Role {
 
 model User {
   id      Int    @id @default(autoincrement())
-  email   String @unique
+  handle  String @unique
   icon    String @default("/default-user-icon.jpg")
   role    Role   @default(USER)
   botList Bot[]
 }
 
 model Bot {
-  id        Int    @id @default(autoincrement())
-  botName   String
-  user      User   @relation(fields: [userEmail], references: [email])
-  userEmail String
-  token     String
-  icon      String
-  api       Json
+  id         Int    @id @default(autoincrement())
+  botName    String
+  user       User   @relation(fields: [userHandle], references: [handle])
+  userHandle String
+  token      String
+  icon       String
+  api        Json
 }
 
 model Config {

@@ -6,7 +6,9 @@
         <input type="submit" value="Login" />
     </form>
     <hr />
-    Or: <a href="/login/via-github">Login via GitHub</a>
+    Or:<br />
+    <a href="/login/via-github">Login via GitHub</a><br />
+    <a href="/login/via-indieauth">Login via IndieAuth</a><br />
     <hr />
     <a href="/">Back</a>
 </div>

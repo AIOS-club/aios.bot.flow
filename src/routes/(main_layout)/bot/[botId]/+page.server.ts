@@ -1,5 +1,5 @@
 import { GetBotById, GetUser } from '$lib/db/prisma.js';
-import { CheckLoginSession } from '$lib/session';
+import { CheckLoginSession, SESSION_USER_CODE_KEY, SESSION_USER_HANDLE_KEY } from '$lib/session';
 import { error } from '@sveltejs/kit';
 
 export async function load({ params, cookies }) {
@@ -10,13 +10,13 @@ export async function load({ params, cookies }) {
         });
     }
     
-    let userEmail = cookies.get('session_userEmail')||'';
-    let user = await GetUser(userEmail);
-    let session = cookies.get('session_code')||'';
+    let userHandle = cookies.get(SESSION_USER_HANDLE_KEY)||'';
+    let user = await GetUser(userHandle);
+    let session = cookies.get(SESSION_USER_CODE_KEY)||'';
     let allowEdit =
         user && (
-            (userEmail === bot.userEmail
-            && await CheckLoginSession(userEmail, session))
+            (userHandle === bot.userHandle
+            && await CheckLoginSession(userHandle, session))
             || (user!.role === 'ADMIN'))
     return {
         params: params,
@@ -26,7 +26,7 @@ export async function load({ params, cookies }) {
             api: bot.api,
             botName: bot.botName,
             icon: bot.icon,
-            userEmail: bot.userEmail,
+            userHandle: bot.userHandle,
         }
     };
 }

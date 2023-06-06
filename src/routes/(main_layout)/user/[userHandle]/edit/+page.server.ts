@@ -1,5 +1,5 @@
 import { GetUser, UpdateUser } from '$lib/db/prisma';
-import { CheckLoginSession } from '$lib/session.js';
+import { CheckLoginSession, SESSION_USER_CODE_KEY, SESSION_USER_HANDLE_KEY } from '$lib/session.js';
 import { redirect } from '@sveltejs/kit';
 import * as crypto from 'crypto';
 
@@ -9,20 +9,19 @@ function md5hex(str: string) {
 }
 
 export async function load({ params, cookies }) {
-    let userEmail = cookies.get('session_userEmail')||'';
-    let user = await GetUser(userEmail);
+    let userHandle = cookies.get(SESSION_USER_HANDLE_KEY)||'';
+    let user = await GetUser(userHandle);
     if (!user) {
         throw redirect(302, '/');
     }
-    let sessionCode = cookies.get('session_code')||'';
-    let checkRes = await CheckLoginSession(userEmail, sessionCode);
-    if (!checkRes || (user.email !== params.userEmail && user.role !== 'ADMIN')) {
-        throw redirect(302, `/user/${params.userEmail}`);
+    let sessionCode = cookies.get(SESSION_USER_CODE_KEY)||'';
+    let checkRes = await CheckLoginSession(userHandle, sessionCode);
+    if (!checkRes || (user.handle !== params.userHandle && user.role !== 'ADMIN')) {
+        throw redirect(302, `/user/${params.userHandle}`);
     }
     return {
         canSetAdmin: user.role === 'ADMIN',
         user: user,
-        gravatarIcon: `https://www.gravatar.com/avatar/${md5hex(user.email)}`,
     };
 }
 
@@ -31,10 +30,10 @@ export const actions = {
         const data = await e.request.formData();
         let icon = data.get('icon')?.toString()||'';
         let role = data.get('role')?.toString()||'';
-        await UpdateUser(e.params.userEmail, {
+        await UpdateUser(e.params.userHandle, {
             icon: icon,
             role: role
         });
-        throw redirect(302, `/user/${e.params.userEmail}`);
+        throw redirect(302, `/user/${e.params.userHandle}`);
     }
 };

@@ -1,12 +1,12 @@
 import { DeleteBotById, GetBotById, GetUser, GlobalPrismaClient } from "$lib/db/prisma.js";
-import { CheckLoginSession } from "$lib/session";
+import { CheckLoginSession, SESSION_USER_CODE_KEY, SESSION_USER_HANDLE_KEY } from "$lib/session";
 import { error, redirect } from "@sveltejs/kit";
 
 export async function load({params, cookies}) {
-    let userEmail = cookies.get('session_userEmail');
-    if (!userEmail) { throw redirect(302, '/'); }
-    let session = cookies.get('session_code')||'';
-    if (!await CheckLoginSession(userEmail, session)) {
+    let userHandle = cookies.get(SESSION_USER_HANDLE_KEY);
+    if (!userHandle) { throw redirect(302, '/'); }
+    let session = cookies.get(SESSION_USER_CODE_KEY)||'';
+    if (!await CheckLoginSession(userHandle, session)) {
         throw redirect(302, `/bot/${params.botId}`);
     }
     let bot = await GetBotById(parseInt(params.botId, 10));
@@ -22,7 +22,7 @@ export async function load({params, cookies}) {
             botName: bot.botName,
             icon: bot.icon,
             token: bot.token,
-            userEmail: bot.userEmail,
+            userHandle: bot.userHandle,
         }
     };
 }
@@ -36,14 +36,14 @@ export const actions = {
             });
         }
         
-        let userEmail = e.cookies.get('session_userEmail');
-        if (!userEmail) { throw error(403, {message: 'Forbidden'}); }
-        let user = await GetUser(userEmail);
-        if (!user || (user.email !== bot.userEmail && user.role !== 'ADMIN')) {
+        let userHandle = e.cookies.get(SESSION_USER_HANDLE_KEY);
+        if (!userHandle) { throw error(403, {message: 'Forbidden'}); }
+        let user = await GetUser(userHandle);
+        if (!user || (user.handle !== bot.userHandle && user.role !== 'ADMIN')) {
             throw error(403, {message: 'Forbidden'});
         }
         
         await DeleteBotById(parseInt(e.params.botId, 10));
-        throw redirect(302, `/user/${userEmail}`);
+        throw redirect(302, `/user/${userHandle}`);
     }
 };

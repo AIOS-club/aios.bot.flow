@@ -12,10 +12,10 @@ type _Message = {
 };
 
 function _ResolveSMTPSender(mailerConfig: any) {
-    let host = mailerConfig.config.server || env.SMTP_SERVER;
-    let port = mailerConfig.config.port || env.SMTP_PORT;
-    let email = mailerConfig.config.email || env.SMTP_EMAIL;
-    let password = mailerConfig.config.password || env.SMTP_PASSWORD;
+    let host = mailerConfig?.config.server || env.SMTP_SERVER;
+    let port = mailerConfig?.config.port || env.SMTP_PORT;
+    let email = mailerConfig?.config.email || env.SMTP_EMAIL;
+    let password = mailerConfig?.config.password || env.SMTP_PASSWORD;
     return async function (message: _Message) {
         let _mailAccount = nodemailer.createTransport({
             host: host,

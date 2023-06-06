@@ -2,6 +2,7 @@ import fetch from 'node-fetch';
 import { GetBotById } from "$lib/db/prisma";
 import { BotAPIResponseType } from "$lib/response";
 import type { RequestEvent } from "@sveltejs/kit";
+import { IsRelativePathEqual } from '$lib/util';
 
 function _CheckSchema(value: any, schema: any) {
     if (
@@ -167,7 +168,7 @@ export async function GET(e: RequestEvent) {
     if (!bot) {
         return _Error(BotAPIResponseType.ERR_NO_BOT, 'No such bot.');
     }
-    let descriptor = (bot!.api as any[]).filter((v) => v.path.substring(1) === e.params.botEndpoint);
+    let descriptor = (bot!.api as any[]).filter((v) => IsRelativePathEqual(v.path, e.params.botEndpoint!));
     if (descriptor.length <= 0) {
         return _Error(BotAPIResponseType.ERR_NO_ENDPOINT, 'No such endpoint.');
     }
@@ -189,7 +190,7 @@ export async function GET(e: RequestEvent) {
         }
     }
     let r: {[key: string]: any} = {};
-    endpointConfig.output.forEach((v) => {
+    endpointConfig.output.forEach((v: any) => {
         r[v] = env[v];
     })
     return _Ok(r);
@@ -200,7 +201,7 @@ export async function POST(e: RequestEvent) {
     if (!bot) {
         return _Error(BotAPIResponseType.ERR_NO_BOT, 'No such bot.');
     }
-    let descriptor = (bot!.api as any[]).filter((v) => v.path.substring(1) === e.params.botEndpoint);
+    let descriptor = (bot!.api as any[]).filter((v) => IsRelativePathEqual(v.path, e.params.botEndpoint!));
     if (descriptor.length <= 0) {
         return _Error(BotAPIResponseType.ERR_NO_ENDPOINT, 'No such endpoint.');
     }
@@ -224,7 +225,7 @@ export async function POST(e: RequestEvent) {
         }
     }
     let r: {[key: string]: any} = {};
-    endpointConfig.output.forEach((v) => {
+    endpointConfig.output.forEach((v: any) => {
         r[v] = env[v];
     })
     return _Ok(r);

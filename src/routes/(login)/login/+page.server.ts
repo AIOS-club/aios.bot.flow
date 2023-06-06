@@ -8,7 +8,7 @@ export const actions = {
     default: async (e: RequestEvent) => {
         const data = await e.request.formData();
         let userEmail = data.get('email')?.toString()||'';
-        e.cookies.set('login_userEmail', userEmail, {
+        e.cookies.set('login_userHandle', userEmail, {
             secure: !(dev || import.meta.env.DEV)
         });
         // console.log(`OTP Registering...`);

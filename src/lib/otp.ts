@@ -50,3 +50,24 @@ export async function InvalidateGithubLoginOTP(otp: string) {
     let client = await GetRedisClient();
     await client.del(key);
 }
+
+export async function RegisterIndieAuthLoginOTP(otp: string) {
+    let key = `otp_indieauth_${otp}`;
+    let value = `ok`;
+    let client = await GetRedisClient();
+    await client.set(key, value, 'EX', 600);
+    return;
+}
+
+export async function CheckIndieAuthLoginOTP(otp: string) {
+    let key = `otp_indieauth_${otp}`;
+    let client = await GetRedisClient();
+    let r = await client.get(key);
+    return r && r === 'ok';
+}
+
+export async function InvalidateIndieAuthLoginOTP(otp: string) {
+    let key = `otp_indieauth_${otp}`;
+    let client = await GetRedisClient();
+    await client.del(key);
+}

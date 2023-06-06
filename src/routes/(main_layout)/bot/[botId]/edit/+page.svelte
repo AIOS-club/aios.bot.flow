@@ -20,10 +20,10 @@
         });
         apiData = apiData;
     }
-    function handleUseYaml(e) {
+    function handleUseYaml(e: Event) {
         let endpoint = botBodyElem.querySelectorAll('.endpoint-config');
         endpoint.forEach((v) => {
-            if (e.target.checked) {
+            if ((e.target as HTMLInputElement).checked) {
                 (v as any).value = yaml.stringify(JSON.parse((v as any).value));
             } else {
                 (v as any).value = JSON.stringify(yaml.parse((v as any).value), undefined, '    ');

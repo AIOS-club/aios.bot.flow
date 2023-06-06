@@ -11,7 +11,7 @@
 		</span>
 		<div class="right">
 			{#if data.loggedIn && data.user}
-				<span><a href={`/user/${data.user.email}`}>{data.user.email}</a></span>
+				<span><a href={`/user/${data.user.handle}`}>{data.user.handle}</a></span>
 				{#if data.user.role === 'ADMIN'}
 				<span><a href="/admin">Admin</a></span>
 				{/if}

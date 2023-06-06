@@ -4,7 +4,7 @@
 </script>
 
 <svelte:head>
-    <title>user: {data.params.userEmail} :: aios.bot.flow</title>
+    <title>user: {data.params.userHandle} :: aios.bot.flow</title>
 </svelte:head>
 <div id="user-profile">
     <div id="user-card">
@@ -15,12 +15,12 @@
 
             </svg>
         {/if}
-        <b>{data.params.userEmail}</b><br />
-        <a href={`/user/${data.params.userEmail}/edit`}>Edit Profile</a>
+        <b>{data.params.userHandle}</b><br />
+        <a href={`/user/${data.params.userHandle}/edit`}>Edit Profile</a>
     </div>
     <details open id="user-bot-list">
         {#if data.allowEdit}
-        <a href={`/user/${data.params.userEmail}/newbot`}>New Bot</a>
+        <a href={`/user/${data.params.userHandle}/newbot`}>New Bot</a>
         {/if}
         <summary>Bots</summary>
         {#if data.user.bot}

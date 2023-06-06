@@ -1,14 +1,15 @@
 import { GetAllConfig, GetUser, RegisterConfig } from '$lib/db/prisma';
+import { SESSION_USER_HANDLE_KEY } from '$lib/session.js';
 import { redirect } from '@sveltejs/kit';
 
 export async function load({ params, cookies }) {
-    let userEmail = cookies.get('session_userEmail')||'';
-    let user = await GetUser(userEmail);
+    let userHandle = cookies.get(SESSION_USER_HANDLE_KEY)||'';
+    let user = await GetUser(userHandle);
     if (!user) {
         throw redirect(302, '/');
     }
     if (user && user.role !== 'ADMIN') {
-        throw redirect(302, `/user/${userEmail}`);
+        throw redirect(302, `/user/${userHandle}`);
     }
     let x = await GetAllConfig();
     return {
