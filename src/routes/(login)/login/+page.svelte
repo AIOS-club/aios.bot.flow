@@ -8,7 +8,7 @@
     <hr />
     Or:<br />
     <a href="/login/via-github">Login via GitHub</a><br />
-    <a href="/login/via-indieauth">Login via IndieAuth</a><br />
+    <!-- <a href="/login/via-indieauth">Login via IndieAuth</a><br /> -->
     <hr />
     <a href="/">Back</a>
 </div>
