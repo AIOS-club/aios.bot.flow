@@ -24,7 +24,7 @@ export async function load(e) {
         }
     );
     return {
-        data: await r.text();
-    }
+        data: await r.text()
+    };
 
 }
