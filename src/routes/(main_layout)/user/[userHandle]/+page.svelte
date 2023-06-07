@@ -16,7 +16,9 @@
             </svg>
         {/if}
         <b>{data.params.userHandle}</b><br />
+        {#if data.allowEdit}
         <a href={`/user/${data.params.userHandle}/edit`}>Edit Profile</a>
+        {/if}
     </div>
     <details open id="user-bot-list">
         {#if data.allowEdit}
