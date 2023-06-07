@@ -6,7 +6,7 @@ import { redirect } from '@sveltejs/kit';
 
 export async function load(e) {
     let returnUrl = new URL('/login/verify-github', (await ResolveHostname())||'').toString();
-    let githubClientId = (await ResolveGithubAppConfig()).clientId;
+    let githubClientId = ((await ResolveGithubAppConfig()) as any).clientId;
     let state = GenerateRandomString(64);
     await RegisterGithubLoginOTP(state);
     throw redirect(302, `https://github.com/login/oauth/authorize?scope=user:email&client_id=${encodeURIComponent(githubClientId)}&state=${state}&redirect_uri=${encodeURIComponent(returnUrl)}`);

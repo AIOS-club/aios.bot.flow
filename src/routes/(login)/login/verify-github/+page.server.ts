@@ -2,7 +2,7 @@ import { dev } from '$app/environment';
 import { RegisterUser } from '$lib/db/prisma';
 import { ResolveGithubAppConfig } from '$lib/github.js';
 import { CheckGithubLoginOTP, InvalidateGithubLoginOTP } from '$lib/otp.js';
-import { RegisterLoginSession } from '$lib/session';
+import { RegisterLoginSession, SESSION_USER_CODE_KEY, SESSION_USER_HANDLE_KEY } from '$lib/session';
 import { error, redirect } from '@sveltejs/kit';
 
 export async function load(e) {
@@ -50,19 +50,19 @@ export async function load(e) {
         });
     }
     let user = await r.json();
-    let userEmail = user.email;
-    await RegisterUser(userEmail);
-    let session = await RegisterLoginSession(userEmail);
+    let userHandle = user.handle;
+    await RegisterUser(userHandle);
+    let session = await RegisterLoginSession(userHandle);
     
     e.cookies.set(
-        `session_userEmail`, userEmail,
+        SESSION_USER_HANDLE_KEY, userHandle,
         {
             path: '/',
             secure: !dev,
         }
     );
     e.cookies.set(
-        `session_code`, session,
+        SESSION_USER_CODE_KEY, session,
         {
             path: '/',
             secure: !dev,
