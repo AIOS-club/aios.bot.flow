@@ -228,5 +228,7 @@ export async function POST(e: RequestEvent) {
     endpointConfig.output.forEach((v: any) => {
         r[v] = env[v];
     })
-    return _Ok(r);
+    return _Ok(r, {
+        'Access-Control-Allow-Origin': '*'
+    });
 }
