@@ -50,7 +50,7 @@ export async function load(e) {
         });
     }
     let user = await r.json();
-    let userHandle = user.handle;
+    let userHandle = user.email;
     await RegisterUser(userHandle);
     let session = await RegisterLoginSession(userHandle);
     
