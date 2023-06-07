@@ -8,7 +8,9 @@ The basic execution flow of a bot goes as follow:
     1.  replace any `{key}` with the value of `env[key]`.
     2.  check if there's a `responseFormat` config; if there isn't, it would force the LLM to generate JSON when asking.
     3.  ask the LLM with the template replaced with variable values.
-    4.  parse the answer from LLM as a JSON object (or keep it as a raw string, if `responseFormat` is set). store this value in `env[result]`.
+    4.  parse the answer from LLM as a JSON object (or keep it as a raw string, if `responseFormat` is set).
+    5.  if `result` is set, then the whole answer (either JSON or raw string) is stored in the variable it specifies; or else it checks for the `effect` field.
+    6.  perform the effect specified by `effect`
 4.  in the config there would be an `output` option; this option is used to collect result from `env`.
 
 
@@ -67,7 +69,29 @@ output:
   - output
 ```
 
-Result:
+One can call this endpoint like this:
+
+``` javascript
+async function Call(input) {
+    // API address
+    let x = 'https://aios-bot-flow.vercel.app/api/v0/1/generate-color-scheme-demo';
+    let r = await fetch(
+        x,
+        {
+            method: 'POST',
+            body: JSON.stringify({input: input}),
+            headers: {
+                'Accept': 'application/json',
+            }
+        }
+    );
+    let res = await r.json();
+    return res;
+}
+Call('City Neon').then((v) => { console.log(v); return v; });
+```
+
+And get result like this:
 
 ``` json
 {
@@ -87,3 +111,37 @@ Result:
 There are two fields in `data` now because `output` config specified `env.colors` and `env.output`.
 
 NOTE: as of now (2023.6) history is not retained; each step is independent, so you need to include enough context for each step.
+
+## The effect language
+
+each line is in the format of `[variable-name]=[expression]`.
+
+expression supports any combination of follows:
+
++ `[number]` - retrieve element from array
++ `.key-name` - retrieve value with key from object.
++ `#number`/`#boolean`/`#string` - convert to number/boolean/string.
++ `*str`/`*json` - save the whole response as a string or parse it as if it's JSON.
+
+when the responseFormat is json, their semantics are obvious; not so much when it's csv, so we have the following rules:
+
++ `[number1][number2]` selects the `number1` record and then its `number2` field.
+
+  ```
+  a,b,c,d,e;
+  f,g,h,i,j;
+  k,l,m,n,o;
+  ```
+
+  `[1][2]` would retrieve the `h` in the `f,g,h,i,j` row.
+
++ `.key-name` uses the first row as key names. you still refer to the second row as `[1]`.
+
+  ```
+  a,b,c,d,e;
+  f,g,h,i,j;
+  k,l,m,n,o;
+  ```
+
+  `[2].b` would select the `l` in the `k,l,m,n,o` row.
+
